@@ -30,7 +30,7 @@ const Button_Add_To_Cart = ({ product_id, product_title, product_price, product_
     return (
         <>
             <Toast message={toastMessage} onClose={handleToastClose} />
-            <button className="w-full bg-red-500 text-white font-semibold py-2 rounded-sm hover:bg-red-600 transition" onClick={handleAddToCart}>
+            <button onClick={handleAddToCart} className="w-full bg-rose-500 text-white font-semibold py-2 px-4 rounded-md shadow-md hover:bg-rose-600 focus:outline-none focus:ring-2 focus:ring-rose-400 transition duration-300 ease-in-out" >
                 Add To Cart
             </button>
         </>

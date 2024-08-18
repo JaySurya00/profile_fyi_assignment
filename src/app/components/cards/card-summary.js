@@ -1,6 +1,7 @@
 'use client'
 
 import { useCartContext } from "@/app/context/cart_context"
+import ProductPrice from "../price";
 
 export default function OrderDetails() {
     const { cart } = useCartContext();
@@ -17,11 +18,11 @@ export default function OrderDetails() {
             <div className="space-y-2 mb-4">
                 <div className="flex justify-between">
                     <p className="text-gray-600">Price ({itemCount} {itemCount === 1 ? 'Item' : 'Items'})</p>
-                    <p className="font-semibold">${totalPrice.toFixed(2)}</p>
+                    <p className="font-semibold">{ProductPrice(totalPrice)}</p>
                 </div>
                 <div className="flex justify-between">
                     <p className="text-gray-600">Discount</p>
-                    <p className="font-semibold text-red-500">-${totalDiscount.toFixed(2)}</p>
+                    <p className="font-semibold text-red-500">-{ProductPrice(totalDiscount.toFixed(2))}</p>
                 </div>
                 <div className="flex justify-between">
                     <p className="text-gray-600">Delivery Charges</p>
@@ -30,12 +31,14 @@ export default function OrderDetails() {
             </div>
             <div className="flex justify-between items-center mb-4">
                 <p className="font-semibold text-lg">Total Amount</p>
-                <p className="font-semibold text-lg">${(totalPrice - totalDiscount).toFixed(2)}</p>
+                <p className="font-semibold text-lg">{ProductPrice((totalPrice - totalDiscount))}</p>
             </div>
             <div className="self-end">
-                <button className="bg-red-500 text-white font-semibold rounded-md hover:bg-red-600 transition p-2">
-                    Place Order
-                </button>
+                <a href="/payment">
+                    <button className="bg-green-500 text-white font-semibold rounded-md hover:bg-green-600 transition p-2">
+                        Place Order
+                    </button>
+                </a>
             </div>
         </div>
     )

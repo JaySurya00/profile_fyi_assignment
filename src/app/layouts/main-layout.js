@@ -35,7 +35,7 @@ export default function MainLayout() {
                     </div>
                     <div className="relative order-3 md:order-2 md:ml-auto">
                         <a href="/checkout">
-                            <div className="absolute bottom-0 right-0 flex items-center justify-center w-5 h-5 text-xs font-bold text-white bg-red-500 rounded-full transform translate-x-1 translate-y-1">
+                            <div className="absolute bottom-0 right-0 flex items-center justify-center w-5 h-5 text-xs font-bold text-white bg-rose-500 rounded-full transform translate-x-1 translate-y-1">
                                 {itemCount}
                             </div>
 
