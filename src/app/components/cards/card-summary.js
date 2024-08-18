@@ -9,29 +9,23 @@ export default function OrderDetails() {
 
     const itemCount = cart.reduce((total, item) => total + (item.quantity || 1), 0);
     const totalPrice = cart.reduce((total, item) => total + item.mrp * (item.quantity || 1), 0);
-    const totalDiscount = cart.reduce((total, item) => total + (item.mrp - item.price) * (item.quantity || 1), 0);
-    const amountToBePaid = (totalPrice - totalDiscount);
+    const priceDiscount = cart.reduce((total, item) => total + (item.mrp - item.price) * (item.quantity || 1), 0);
+    const [couponDiscount, setCouponDiscount] = useState(0);
 
-    const [totalAmountToBePaid, setTotalAmountToBePaid] = useState(amountToBePaid);
+    const totalDiscount = priceDiscount + couponDiscount;
 
-    const handleDropDownSelect = (selectedOption) => {
+    const handleSelect = (selectedOption) => {
         if (selectedOption.endsWith('%')) {
             const percentage = parseFloat(selectedOption);
-            setTotalAmountToBePaid(() => {
-                const newPrice = Number(((100 - percentage) * amountToBePaid) / 100).toFixed(2);
-                return newPrice >= 0 ? newPrice : 0;
-            });
+            const discount = parseFloat(((totalPrice * percentage) / 100).toFixed(2));
+            setCouponDiscount(discount);
+        } else {
+            const discount = parseFloat(selectedOption);
+            setCouponDiscount(discount);
         }
-        else {
-            const priceDiscount = Number(parseInt(selectedOption)).toFixed(2);
-            setTotalAmountToBePaid(() => {
-                const newPrice = amountToBePaid - priceDiscount;
-                return newPrice >= 0 ? newPrice : 0;
-            });
-        }
-    }
+    };
 
-
+    const finalPrice = Math.max(0, totalPrice - totalDiscount);  // Ensure no negative price
 
     return (
         <div className="flex flex-col border border-gray-200 shadow-lg rounded-lg m-4 p-4 divide-y bg-white">
@@ -45,7 +39,7 @@ export default function OrderDetails() {
                 </div>
                 <div className="flex justify-between">
                     <p className="text-gray-600">Discount</p>
-                    <p className="font-semibold text-red-500">-{ProductPrice(totalDiscount.toFixed(2))}</p>
+                    <p className="font-semibold text-red-500">-{ProductPrice(totalDiscount)}</p>
                 </div>
                 <div className="flex justify-between">
                     <p className="text-gray-600">Delivery Charges</p>
@@ -53,12 +47,12 @@ export default function OrderDetails() {
                 </div>
                 <div className="flex justify-between">
                     <p className="text-gray-600">Apply Coupon</p>
-                    <Dropdown onSelect={handleDropDownSelect} />
+                    <Dropdown onSelect={handleSelect} />
                 </div>
             </div>
             <div className="flex justify-between items-center mb-4">
                 <p className="font-semibold text-lg">Total Amount</p>
-                <p className="font-semibold text-lg">{ProductPrice(totalAmountToBePaid)}</p>
+                <p className="font-semibold text-lg">{ProductPrice(finalPrice)}</p>
             </div>
             <div className="self-end">
                 <a href="/payment">
@@ -68,5 +62,5 @@ export default function OrderDetails() {
                 </a>
             </div>
         </div>
-    )
+    );
 }
